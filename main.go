@@ -29,6 +29,7 @@ func main() {
 	routes.UserRoutes(app)
 	routes.AlamatRoutes(app)
 	routes.TokoRoutes(app)
+	routes.CategoryRoutes(app)
 
 	log.Fatal(app.Listen(":8080"))
 }
