@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -30,6 +31,8 @@ func main() {
 	routes.AlamatRoutes(app)
 	routes.TokoRoutes(app)
 	routes.CategoryRoutes(app)
+	routes.ProductRoutes(app)
 
 	log.Fatal(app.Listen(":8080"))
+	fmt.Println("Server started on port 8080")
 }

@@ -1,12 +1,9 @@
 package services
 
 import (
-	"context"
 	"errors"
 	"math"
-	"mime/multipart"
 
-	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/habbazettt/evermos-service-go/config"
 	"github.com/habbazettt/evermos-service-go/models"
 	"gorm.io/gorm"
@@ -60,18 +57,6 @@ func CreateStore(userID uint, storeData models.Toko) (*models.Toko, error) {
 		return nil, err
 	}
 	return &storeData, nil
-}
-
-// UploadToCloudinary mengunggah gambar langsung ke Cloudinary dari memory
-func UploadToCloudinary(file multipart.File) (string, error) {
-	ctx := context.Background()
-
-	uploadResult, err := config.CLD.Upload.Upload(ctx, file, uploader.UploadParams{})
-	if err != nil {
-		return "", err
-	}
-
-	return uploadResult.SecureURL, nil
 }
 
 // UpdateStore memperbarui informasi toko

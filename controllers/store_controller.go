@@ -154,7 +154,7 @@ func UpdateStore(c *fiber.Ctx) error {
 	namaToko := c.FormValue("nama_toko")
 
 	// Ambil file dari form-data
-	file, err := c.FormFile("photo")
+	file, _ := c.FormFile("photo")
 	var photoURL string
 
 	if file != nil {

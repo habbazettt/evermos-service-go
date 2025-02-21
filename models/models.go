@@ -37,8 +37,8 @@ type Produk struct {
 	ID            uint         `json:"id" gorm:"primaryKey;autoIncrement"`
 	NamaProduk    string       `json:"nama_produk"`
 	Slug          string       `json:"slug"`
-	HargaReseller string       `json:"harga_reseller"`
-	HargaKonsumen string       `json:"harga_konsumen"`
+	HargaReseller int          `json:"harga_reseller"`
+	HargaKonsumen int          `json:"harga_konsumen"`
 	Stok          int          `json:"stok"`
 	Deskripsi     string       `json:"deskripsi"`
 	CreatedAt     time.Time    `json:"created_at"`
@@ -68,8 +68,8 @@ type LogProduk struct {
 	IDProduk      uint      `json:"id_produk"`
 	NamaProduk    string    `json:"nama_produk"`
 	Slug          string    `json:"slug"`
-	HargaReseller string    `json:"harga_reseller"`
-	HargaKonsumen string    `json:"harga_konsumen"`
+	HargaReseller int       `json:"harga_reseller"`
+	HargaKonsumen int       `json:"harga_konsumen"`
 	Deskripsi     string    `json:"deskripsi"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
