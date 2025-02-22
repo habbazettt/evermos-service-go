@@ -73,6 +73,12 @@ func CreateTransaction(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "Produk tidak ditemukan"})
 		}
 
+		// Pastikan stok mencukupi
+		if produk.Stok < detail.Kuantitas {
+			tx.Rollback()
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Stok produk tidak mencukupi"})
+		}
+
 		// Cek apakah sudah ada di LogProduk
 		var logProduk models.LogProduk
 		if err := tx.Where("id_produk = ?", produk.ID).First(&logProduk).Error; err != nil {
@@ -117,6 +123,13 @@ func CreateTransaction(c *fiber.Ctx) error {
 		}
 
 		detailTrxList = append(detailTrxList, detailTrx)
+
+		// Update stok produk
+		produk.Stok -= detail.Kuantitas
+		if err := tx.Save(&produk).Error; err != nil {
+			tx.Rollback()
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Gagal memperbarui stok produk"})
+		}
 	}
 
 	// Update total harga transaksi
