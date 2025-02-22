@@ -13,6 +13,14 @@ import (
 	"gorm.io/gorm"
 )
 
+// Response represents a standard API response format
+type Response struct {
+	Status  bool        `json:"status"`
+	Message string      `json:"message"`
+	Errors  interface{} `json:"errors"`
+	Data    interface{} `json:"data"`
+}
+
 type LoginRequest struct {
 	NoTelp    string `json:"no_telp"`
 	KataSandi string `json:"kata_sandi"`
@@ -38,6 +46,7 @@ type LoginResponse struct {
 	TanggalLahir string            `json:"tanggal_Lahir"`
 	Tentang      string            `json:"tentang"`
 	Pekerjaan    string            `json:"pekerjaan"`
+	JenisKelamin string            `json:"jenis_kelamin"`
 	Email        string            `json:"email"`
 	IsAdmin      bool              `json:"is_admin"`
 	Provinsi     services.Province `json:"id_provinsi"`
@@ -45,7 +54,17 @@ type LoginResponse struct {
 	Token        string            `json:"token"`
 }
 
-// REGISTER HANDLER
+// Register - Register a new user
+// @Summary Register a new user to the system
+// @Description Register a new user with the provided details (name, phone number, email, password, etc.)
+// @Tags Authentication
+// @Accept  json
+// @Produce  json
+// @Param request body RegisterRequest true "Register Request Body"
+// @Success 201 {object} Response
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /auth/register [post]
 func Register(c *fiber.Ctx) error {
 	var data RegisterRequest
 	if err := c.BodyParser(&data); err != nil {
@@ -165,7 +184,17 @@ func Register(c *fiber.Ctx) error {
 	})
 }
 
-// LOGIN HANDLER
+// Login - User login
+// @Summary Login a user with phone number and password
+// @Description Login a user and return a JWT token along with user details.
+// @Tags Authentication
+// @Accept  json
+// @Produce  json
+// @Param request body LoginRequest true "Login Request Body"
+// @Success 200 {object} LoginResponse
+// @Failure 400 {object} Response
+// @Failure 500 {object} Response
+// @Router /auth/login [post]
 func Login(c *fiber.Ctx) error {
 	var req LoginRequest
 	if err := c.BodyParser(&req); err != nil {

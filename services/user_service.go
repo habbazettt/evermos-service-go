@@ -44,27 +44,61 @@ func UpdateUserByID(userID string, updateData UpdateUserRequest) (*models.User, 
 		return nil, errors.New("user tidak ditemukan")
 	}
 
-	// Update data user
-	user.Nama = updateData.Nama
-	user.KataSandi = updateData.KataSandi
-	user.NoTelp = updateData.NoTelp
-	user.TanggalLahir = updateData.TanggalLahir
-	user.Pekerjaan = updateData.Pekerjaan
-	user.JenisKelamin = updateData.JenisKelamin
-	user.Tentang = updateData.Tentang
-	user.Email = updateData.Email
-	user.IDProvinsi = updateData.IDProvinsi
-	user.IDKota = updateData.IDKota
-	user.IsAdmin = updateData.IsAdmin
+	// Map untuk menyimpan data yang akan diperbarui
+	updateFields := map[string]interface{}{}
 
-	// Simpan perubahan
-	if err := config.DB.Save(&user).Error; err != nil {
+	// Hanya update jika field diisi
+	if updateData.Nama != "" {
+		updateFields["nama"] = updateData.Nama
+	}
+	if updateData.KataSandi != "" {
+		updateFields["kata_sandi"] = updateData.KataSandi
+	}
+	if updateData.NoTelp != "" {
+		updateFields["no_telp"] = updateData.NoTelp
+	}
+	if updateData.TanggalLahir != "" {
+		updateFields["tanggal_lahir"] = updateData.TanggalLahir
+	}
+	if updateData.Pekerjaan != "" {
+		updateFields["pekerjaan"] = updateData.Pekerjaan
+	}
+	if updateData.JenisKelamin != "" {
+		updateFields["jenis_kelamin"] = updateData.JenisKelamin
+	}
+	if updateData.Tentang != "" {
+		updateFields["tentang"] = updateData.Tentang
+	}
+	if updateData.Email != "" {
+		updateFields["email"] = updateData.Email
+	}
+	if updateData.IDProvinsi != "" {
+		updateFields["id_provinsi"] = updateData.IDProvinsi
+	}
+	if updateData.IDKota != "" {
+		updateFields["id_kota"] = updateData.IDKota
+	}
+
+	// Pastikan hanya admin yang bisa mengubah `is_admin`
+	if updateData.IsAdmin != user.IsAdmin {
+		updateFields["is_admin"] = updateData.IsAdmin
+	}
+
+	// Jika tidak ada perubahan, kembalikan user tanpa update ke database
+	if len(updateFields) == 0 {
+		return &user, nil
+	}
+
+	// Update user di database
+	if err := config.DB.Model(&user).Updates(updateFields).Error; err != nil {
 		return nil, errors.New("gagal memperbarui user")
 	}
 
-	// Perbarui nama toko jika ada
-	if err := config.DB.Model(&models.Toko{}).Where("id_user = ?", user.ID).Update("nama_toko", user.Nama+" Store").Error; err != nil {
-		return nil, errors.New("gagal memperbarui nama toko")
+	// Jika nama diperbarui, update juga nama toko
+	if namaBaru, ok := updateFields["nama"]; ok {
+		if err := config.DB.Model(&models.Toko{}).Where("id_user = ?", user.ID).Update("nama_toko", namaBaru.(string)+" Store").Error; err != nil {
+			return nil, errors.New("gagal memperbarui nama toko")
+		}
 	}
 
 	return &user, nil

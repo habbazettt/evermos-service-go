@@ -9,7 +9,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetMyProfile handler
+// Get My Profile
+// @summary Get My Profile
+// @description Get the current user's profile.
+// @tags User
+// @accept json
+// @produce json
+// @security BearerAuth
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 404 {object} Response
+// @failure 500 {object} Response
+// @router /user [get]
 func GetMyProfile(c *fiber.Ctx) error {
 	// Ambil user_id dari token JWT
 	userID, err := middleware.ExtractUserID(c)
@@ -42,7 +53,20 @@ func GetMyProfile(c *fiber.Ctx) error {
 	})
 }
 
-// UpdateProfile handler
+// Update My Profile
+// @summary Update My Profile
+// @description Update the current user's profile.
+// @tags User
+// @accept json
+// @produce json
+// @security BearerAuth
+// @Param request body services.UpdateUserRequest true "Update Profile Request"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 401 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /user [put]
 func UpdateProfile(c *fiber.Ctx) error {
 	// Ambil user_id dari token JWT
 	userID, err := middleware.ExtractUserID(c)

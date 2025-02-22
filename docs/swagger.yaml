@@ -1,4 +1,256 @@
+basePath: /api/v1
+definitions:
+  controllers.LoginRequest:
+    properties:
+      kata_sandi:
+        type: string
+      no_telp:
+        type: string
+    type: object
+  controllers.LoginResponse:
+    properties:
+      email:
+        type: string
+      id_kota:
+        $ref: '#/definitions/services.City'
+      id_provinsi:
+        $ref: '#/definitions/services.Province'
+      is_admin:
+        type: boolean
+      jenis_kelamin:
+        type: string
+      nama:
+        type: string
+      no_telp:
+        type: string
+      pekerjaan:
+        type: string
+      tanggal_Lahir:
+        type: string
+      tentang:
+        type: string
+      token:
+        type: string
+    type: object
+  controllers.RegisterRequest:
+    properties:
+      email:
+        type: string
+      id_kota:
+        type: string
+      id_provinsi:
+        type: string
+      is_admin:
+        type: boolean
+      jenis_kelamin:
+        type: string
+      kata_sandi:
+        type: string
+      nama:
+        type: string
+      no_telp:
+        type: string
+      pekerjaan:
+        type: string
+      tanggal_lahir:
+        type: string
+      tentang:
+        type: string
+    type: object
+  controllers.Response:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  services.City:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      province_id:
+        type: string
+    type: object
+  services.Province:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  services.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      id_kota:
+        type: string
+      id_provinsi:
+        type: string
+      is_admin:
+        type: boolean
+      jenis_kelamin:
+        type: string
+      kata_sandi:
+        type: string
+      nama:
+        type: string
+      no_telp:
+        type: string
+      pekerjaan:
+        type: string
+      tanggal_Lahir:
+        type: string
+      tentang:
+        type: string
+    type: object
+host: localhost:8080
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: '@habbazettt'
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is the API documentation for Evermos service backend.
+  termsOfService: http://swagger.io/terms/
+  title: Evermos Store and Product API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user and return a JWT token along with user details.
+      parameters:
+      - description: Login Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Login a user with phone number and password
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details (name, phone number,
+        email, password, etc.)
+      parameters:
+      - description: Register Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Register a new user to the system
+      tags:
+      - Authentication
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: Get the current user's profile.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Profile
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update the current user's profile.
+      parameters:
+      - description: Update Profile Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update My Profile
+      tags:
+      - User
+securityDefinitions:
+  BearerAuth:
+    description: 'Enter your token in the format: Bearer <token>'
+    in: header
+    name: token
+    type: apiKey
 swagger: "2.0"
