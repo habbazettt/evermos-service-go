@@ -13,4 +13,5 @@ type DetailTransaction struct {
 	HargaTotal  int       `json:"harga_total"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+	LogProduct  LogProduk `json:"log_product,omitempty" gorm:"foreignKey:IDLogProduk"`
 }
