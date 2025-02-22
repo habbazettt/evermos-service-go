@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 	"github.com/habbazettt/evermos-service-go/config"
 	"github.com/habbazettt/evermos-service-go/routes"
 	"github.com/joho/godotenv"
@@ -25,14 +26,9 @@ func main() {
 
 	app := fiber.New()
 
-	routes.AuthRoutes(app)
-	routes.LocationRoutes(app)
-	routes.UserRoutes(app)
-	routes.AlamatRoutes(app)
-	routes.TokoRoutes(app)
-	routes.CategoryRoutes(app)
-	routes.ProductRoutes(app)
-	routes.TransactionRoutes(app)
+	routes.SetupRoutes(app)
+
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	log.Fatal(app.Listen(":8080"))
 	fmt.Println("Server started on port 8080")
