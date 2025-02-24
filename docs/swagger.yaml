@@ -198,6 +198,115 @@ paths:
       summary: Register a new user to the system
       tags:
       - Authentication
+  /provcity/detailcity/{city_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of a specific city by ID.
+      parameters:
+      - description: City ID
+        in: path
+        name: city_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get City Detail
+      tags:
+      - Location
+  /provcity/detailprovince/{prov_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of a specific province by ID.
+      parameters:
+      - description: Province ID
+        in: path
+        name: prov_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get Province Detail
+      tags:
+      - Location
+  /provcity/listcities/{prov_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of cities in a specific province.
+      parameters:
+      - description: Province ID
+        in: path
+        name: prov_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get List of Cities
+      tags:
+      - Location
+  /provcity/listprovincies:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of provinces with optional search, limit, and pagination.
+      parameters:
+      - description: Search province by name
+        in: query
+        name: search
+        type: string
+      - default: 10
+        description: Limit results per page
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get List of Provinces
+      tags:
+      - Location
   /user:
     get:
       consumes:

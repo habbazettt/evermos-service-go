@@ -7,7 +7,18 @@ import (
 	"github.com/habbazettt/evermos-service-go/services"
 )
 
-// Get List Provinces Handler
+// Get List of Provinces
+// @Summary Get List of Provinces
+// @Description Get a list of provinces with optional search, limit, and pagination.
+// @Tags Location
+// @Accept json
+// @Produce json
+// @Param search query string false "Search province by name"
+// @Param limit query int false "Limit results per page" default(10)
+// @Param page query int false "Page number" default(1)
+// @Success 200 {object} Response
+// @Failure 500 {object} Response
+// @Router /provcity/listprovincies [get]
 func GetListProvinces(c *fiber.Ctx) error {
 	search := c.Query("search", "")
 	limit, _ := strconv.Atoi(c.Query("limit", "10"))
@@ -31,7 +42,16 @@ func GetListProvinces(c *fiber.Ctx) error {
 	})
 }
 
-// Get Detail Province Handler
+// Get Province Detail
+// @Summary Get Province Detail
+// @Description Get detailed information of a specific province by ID.
+// @Tags Location
+// @Accept json
+// @Produce json
+// @Param prov_id path string true "Province ID"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /provcity/detailprovince/{prov_id} [get]
 func GetProvinceDetail(c *fiber.Ctx) error {
 	provinceID := c.Params("prov_id")
 
@@ -53,18 +73,25 @@ func GetProvinceDetail(c *fiber.Ctx) error {
 	})
 }
 
-// Get List Cities Handler
+// Get List of Cities
+// @Summary Get List of Cities
+// @Description Get a list of cities in a specific province.
+// @Tags Location
+// @Accept json
+// @Produce json
+// @Param prov_id path string true "Province ID"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /provcity/listcities/{prov_id} [get]
 func GetListCities(c *fiber.Ctx) error {
 	provinceID := c.Params("prov_id")
-	search := c.Query("search", "")
-	limit, _ := strconv.Atoi(c.Query("limit", "10"))
-	page, _ := strconv.Atoi(c.Query("page", "1"))
 
-	cities, err := services.GetListCities(provinceID, search, limit, page)
+	// Ambil data kota berdasarkan provinsi
+	cities, err := services.GetCitiesByProvince(provinceID)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  false,
-			"message": "Failed to fetch city data",
+			"message": "Failed to fetch cities",
 			"errors":  err.Error(),
 			"data":    nil,
 		})
@@ -79,20 +106,19 @@ func GetListCities(c *fiber.Ctx) error {
 }
 
 // Get Detail City Handler
+// @Summary Get City Detail
+// @Description Get detailed information of a specific city by ID.
+// @Tags Location
+// @Accept json
+// @Produce json
+// @Param city_id path string true "City ID"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /provcity/detailcity/{city_id} [get]
 func GetCityDetail(c *fiber.Ctx) error {
 	cityID := c.Params("city_id")
 
-	// Validasi jika city_id kosong
-	if cityID == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  false,
-			"message": "City ID is required",
-			"errors":  nil,
-			"data":    nil,
-		})
-	}
-
-	// Fetch data city berdasarkan city_id
+	// Ambil data kota berdasarkan city ID
 	city, err := services.GetCityDetailByID(cityID)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{

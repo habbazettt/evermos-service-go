@@ -24,7 +24,8 @@ type City struct {
 
 // API Wilayah Indonesia
 const apiProvinsi = "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
-const apiKota = "https://www.emsifa.com/api-wilayah-indonesia/api/regencies/"
+const apiKota = "https://www.emsifa.com/api-wilayah-indonesia/api/regencies.json"
+const apiKotaBase = "https://www.emsifa.com/api-wilayah-indonesia/api/regencies/"
 
 // Get All Provinces
 func GetAllProvinces() ([]Province, error) {
@@ -43,22 +44,28 @@ func GetAllProvinces() ([]Province, error) {
 	return provinces, nil
 }
 
-// Get All Cities by Province ID
+// Get List of Cities by Province ID
 func GetCitiesByProvince(provinceID string) ([]City, error) {
 	if provinceID == "" {
 		return nil, errors.New("province ID is required")
 	}
 
-	resp, err := http.Get(apiKota + provinceID + ".json")
+	// Panggil API berdasarkan provinsi
+	url := fmt.Sprintf("%s%s.json", apiKotaBase, provinceID)
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	var cities []City
-	err = json.NewDecoder(resp.Body).Decode(&cities)
-	if err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&cities); err != nil {
 		return nil, err
+	}
+
+	// Jika tidak ada data kota ditemukan
+	if len(cities) == 0 {
+		return nil, errors.New("no cities found for this province")
 	}
 
 	return cities, nil
@@ -198,29 +205,46 @@ func GetCityDetail(provinceID, cityID string) (*City, error) {
 	return nil, errors.New("city not found")
 }
 
-// Get Detail City by City ID Only
+// Get City Detail by City ID
 func GetCityDetailByID(cityID string) (*City, error) {
 	if cityID == "" {
 		return nil, errors.New("city ID is required")
 	}
 
-	// Panggil API untuk mendapatkan data kota berdasarkan ID
-	url := fmt.Sprintf("https://api.rajaongkir.com/starter/city/%s", cityID)
-	resp, err := http.Get(url)
+	// Karena API tidak menyediakan endpoint langsung untuk `cityID`,
+	// kita harus memeriksa semua kota dari berbagai provinsi.
+	provinces, err := GetAllProvinces()
 	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to fetch provinces: %w", err)
 	}
 
-	var city City
-	err = json.NewDecoder(resp.Body).Decode(&city)
-	if err != nil {
-		return nil, err
+	// Loop ke semua provinsi untuk mencari kota
+	for _, province := range provinces {
+		url := fmt.Sprintf("%s%s.json", apiKotaBase, province.ID)
+		resp, err := http.Get(url)
+		if err != nil {
+			continue // Lewati jika gagal
+		}
+		defer resp.Body.Close()
+
+		// Cek jika API tidak mengembalikan status 200
+		if resp.StatusCode != http.StatusOK {
+			continue
+		}
+
+		// Decode JSON daftar kota dari provinsi ini
+		var cities []City
+		if err := json.NewDecoder(resp.Body).Decode(&cities); err != nil {
+			continue
+		}
+
+		// Cari kota yang sesuai dengan cityID
+		for _, city := range cities {
+			if city.ID == cityID {
+				return &city, nil
+			}
+		}
 	}
 
-	return &city, nil
+	return nil, errors.New("city not found")
 }
