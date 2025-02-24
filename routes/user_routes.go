@@ -10,6 +10,6 @@ import (
 func UserRoutes(app *fiber.App) {
 	user := app.Group("/api/v1/user", middleware.JWTMiddleware())
 
-	user.Get("/", controllers.GetMyProfile)  // Route untuk Get My Profile
-	user.Put("/", controllers.UpdateProfile) // Route untuk Update Profile
+	user.Get("/", controllers.GetMyProfile)
+	user.Put("/", controllers.UpdateProfile)
 }

@@ -7,14 +7,6 @@ import (
 	"github.com/habbazettt/evermos-service-go/models"
 )
 
-type AlamatRequest struct {
-	JudulAlamat string `json:"judul_alamat" validate:"required"`
-	Alamat      string `json:"alamat" validate:"required"`
-	Kota        string `json:"kota" validate:"required"`
-	Provinsi    string `json:"provinsi" validate:"required"`
-	KodePos     string `json:"kode_pos" validate:"required"`
-}
-
 // GetAddressesByUserID mengambil daftar alamat berdasarkan user ID
 func GetAddressesByUserID(userID uint, judulAlamat string) ([]models.Alamat, error) {
 	var addresses []models.Alamat

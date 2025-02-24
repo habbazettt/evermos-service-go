@@ -13,7 +13,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// Response represents a standard API response format
 type Response struct {
 	Status  bool        `json:"status"`
 	Message string      `json:"message"`

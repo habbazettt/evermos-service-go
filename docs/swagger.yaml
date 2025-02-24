@@ -66,6 +66,25 @@ definitions:
       status:
         type: boolean
     type: object
+  models.Alamat:
+    properties:
+      created_at:
+        type: string
+      detail_alamat:
+        type: string
+      id:
+        type: integer
+      id_user:
+        type: integer
+      judul_alamat:
+        type: string
+      nama_penerima:
+        type: string
+      no_telp:
+        type: string
+      updated_at:
+        type: string
+    type: object
   services.City:
     properties:
       id:
@@ -247,6 +266,196 @@ paths:
       summary: Update My Profile
       tags:
       - User
+  /user/alamat:
+    get:
+      consumes:
+      - application/json
+      description: Get all addresses for the authenticated user.
+      parameters:
+      - description: Filter by address title
+        in: query
+        name: judul_alamat
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Addresses
+      tags:
+      - Address
+    post:
+      consumes:
+      - application/json
+      description: Create a new address for the authenticated user.
+      parameters:
+      - description: Address Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Alamat'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Create a new address
+      tags:
+      - Address
+  /user/alamat/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific address for the authenticated user.
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete Address by ID
+      tags:
+      - Address
+    get:
+      consumes:
+      - application/json
+      description: Get a specific address for the authenticated user.
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Address by ID
+      tags:
+      - Address
+    put:
+      consumes:
+      - application/json
+      description: Update an existing address for the authenticated user.
+      parameters:
+      - description: Address ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Address Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Alamat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update Address by ID
+      tags:
+      - Address
 securityDefinitions:
   BearerAuth:
     description: 'Enter your token in the format: Bearer <token>'

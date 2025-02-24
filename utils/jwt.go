@@ -7,10 +7,8 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-// Secret Key untuk JWT
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
-// GenerateJWT membuat token JWT
 func GenerateJWT(email string, userID int) (string, error) {
 	claims := jwt.MapClaims{
 		"email": email,
