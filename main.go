@@ -13,17 +13,11 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	_ = godotenv.Load()
 
 	config.ConnectDB()
 
-	err = config.SetupCloudinary()
-	if err != nil {
-		log.Fatal("Cloudinary setup failed:", err)
-	}
+	config.SetupCloudinary()
 
 	app := fiber.New()
 
