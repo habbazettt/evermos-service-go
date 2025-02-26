@@ -197,6 +197,177 @@ paths:
       summary: Register a new user to the system
       tags:
       - Authentication
+  /category:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all categories.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get All Categories
+      tags:
+      - Category
+    post:
+      consumes:
+      - application/json
+      description: Create a new category (Admin only).
+      parameters:
+      - description: Category Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            nama_category:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Create a new category
+      tags:
+      - Category
+  /category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category by ID (Admin only).
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete a category
+      tags:
+      - Category
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information of a specific category by ID.
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get Category By ID
+      tags:
+      - Category
+    put:
+      consumes:
+      - application/json
+      description: Update a category's name (Admin only).
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            nama_category:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update a category
+      tags:
+      - Category
   /provcity/detailcity/{city_id}:
     get:
       consumes:

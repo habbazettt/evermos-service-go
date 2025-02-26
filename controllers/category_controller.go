@@ -8,6 +8,14 @@ import (
 )
 
 // Get All Categories
+// @summary Get All Categories
+// @description Get a list of all categories.
+// @tags Category
+// @accept json
+// @produce json
+// @success 200 {object} Response
+// @failure 500 {object} Response
+// @router /category [get]
 func GetAllCategories(c *fiber.Ctx) error {
 	categories, err := services.GetAllCategories()
 	if err != nil {
@@ -26,6 +34,16 @@ func GetAllCategories(c *fiber.Ctx) error {
 }
 
 // Get Category By ID
+// @summary Get Category By ID
+// @description Get detailed information of a specific category by ID.
+// @tags Category
+// @accept json
+// @produce json
+// @param id path int true "Category ID"
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 404 {object} Response
+// @router /category/{id} [get]
 func GetCategoryByID(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -51,6 +69,18 @@ func GetCategoryByID(c *fiber.Ctx) error {
 }
 
 // Create Category (Admin Only)
+// @summary Create a new category
+// @description Create a new category (Admin only).
+// @tags Category
+// @accept json
+// @produce json
+// @security BearerAuth
+// @param request body object{nama_category=string} true "Category Data"
+// @success 201 {object} Response
+// @failure 400 {object} Response
+// @failure 401 {object} Response
+// @failure 500 {object} Response
+// @router /category [post]
 func CreateCategory(c *fiber.Ctx) error {
 	type Request struct {
 		NamaCategory string `json:"nama_category"`
@@ -81,6 +111,20 @@ func CreateCategory(c *fiber.Ctx) error {
 }
 
 // Update Category (Admin Only)
+// @summary Update a category
+// @description Update a category's name (Admin only).
+// @tags Category
+// @accept json
+// @produce json
+// @security BearerAuth
+// @param id path int true "Category ID"
+// @param request body object{nama_category=string} true "Category Data"
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 401 {object} Response
+// @failure 404 {object} Response
+// @failure 500 {object} Response
+// @router /category/{id} [put]
 func UpdateCategory(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -118,6 +162,19 @@ func UpdateCategory(c *fiber.Ctx) error {
 }
 
 // Delete Category (Admin Only)
+// @summary Delete a category
+// @description Delete a category by ID (Admin only).
+// @tags Category
+// @accept json
+// @produce json
+// @security BearerAuth
+// @param id path int true "Category ID"
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 401 {object} Response
+// @failure 404 {object} Response
+// @failure 500 {object} Response
+// @router /category/{id} [delete]
 func DeleteCategory(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
