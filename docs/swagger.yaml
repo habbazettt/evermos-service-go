@@ -858,6 +858,130 @@ paths:
       summary: Get My Store
       tags:
       - Store
+  /trx:
+    get:
+      consumes:
+      - application/json
+      description: Get all transactions with optional filters.
+      parameters:
+      - description: Search transactions by invoice code
+        in: query
+        name: search
+        type: string
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Transactions
+      tags:
+      - Transaction
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction for a user.
+      parameters:
+      - description: Transaction Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            ' alamat_kirim':
+              type: integer
+            ' detail_transaksi':
+              items:
+                properties:
+                  ' kuantitas':
+                    type: integer
+                  product_id:
+                    type: integer
+                type: object
+              type: array
+            method_bayar:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Transaction
+      tags:
+      - Transaction
+  /trx/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a specific transaction by ID.
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Transaction by ID
+      tags:
+      - Transaction
   /user:
     get:
       consumes:

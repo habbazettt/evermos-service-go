@@ -12,7 +12,20 @@ import (
 	"github.com/habbazettt/evermos-service-go/models"
 )
 
-// CreateTransaction - Membuat transaksi baru
+// Create Transaction
+// @Summary Create Transaction
+// @Description Create a new transaction for a user.
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body object{method_bayar=string, alamat_kirim=uint, detail_transaksi=[]object{product_id=uint, kuantitas=int}} true "Transaction Data"
+// @Success 201 {object} Response
+// @Failure 400 {object} Response
+// @Failure 401 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /trx [post]
 func CreateTransaction(c *fiber.Ctx) error {
 	// Ambil user_id dari middleware
 	userID, err := middleware.ExtractUserID(c)
@@ -195,7 +208,19 @@ func CreateTransaction(c *fiber.Ctx) error {
 	})
 }
 
-// GetAllTransactions - Mendapatkan semua transaksi user
+// Get All Transactions
+// @Summary Get All Transactions
+// @Description Get all transactions with optional filters.
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param search query string false "Search transactions by invoice code"
+// @Param limit query int false "Limit per page" default(10)
+// @Param page query int false "Page number" default(1)
+// @Success 200 {object} Response
+// @Failure 500 {object} Response
+// @Router /trx [get]
 func GetAllTransactions(c *fiber.Ctx) error {
 	// Ambil query params
 	search := c.Query("search")                      // Filter berdasarkan kode invoice
@@ -234,7 +259,19 @@ func GetAllTransactions(c *fiber.Ctx) error {
 	})
 }
 
-// GetTransactionByID - Mendapatkan transaksi berdasarkan ID
+// Get Transaction by ID
+// @Summary Get Transaction by ID
+// @Description Get a specific transaction by ID.
+// @Tags Transaction
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Transaction ID"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /trx/{id} [get]
 func GetTransactionByID(c *fiber.Ctx) error {
 	// Ambil query params
 	transactionID := c.Params("id")
