@@ -368,6 +368,245 @@ paths:
       summary: Update a category
       tags:
       - Category
+  /product:
+    get:
+      consumes:
+      - application/json
+      description: Get all products with optional filters.
+      parameters:
+      - description: Filter by product name
+        in: query
+        name: nama_produk
+        type: string
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Filter by category ID
+        in: query
+        name: category_id
+        type: integer
+      - description: Filter by store ID
+        in: query
+        name: toko_id
+        type: integer
+      - description: Filter by maximum price
+        in: query
+        name: max_harga
+        type: integer
+      - description: Filter by minimum price
+        in: query
+        name: min_harga
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get All Products
+      tags:
+      - Product
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new product.
+      parameters:
+      - description: Product name
+        in: formData
+        name: nama_produk
+        required: true
+        type: string
+      - description: Product description
+        in: formData
+        name: deskripsi
+        required: true
+        type: string
+      - description: Category ID
+        in: formData
+        name: id_category
+        required: true
+        type: integer
+      - description: Reseller price
+        in: formData
+        name: harga_reseller
+        required: true
+        type: integer
+      - description: Consumer price
+        in: formData
+        name: harga_konsumen
+        required: true
+        type: integer
+      - description: Product stock
+        in: formData
+        name: stok
+        required: true
+        type: integer
+      - description: Product photos (multiple files allowed)
+        in: formData
+        name: photos
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Create Product
+      tags:
+      - Product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete Product
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Get a product by its ID.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Product by ID
+      tags:
+      - Product
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update a product's information.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product name
+        in: formData
+        name: nama_produk
+        type: string
+      - description: Product description
+        in: formData
+        name: deskripsi
+        type: string
+      - description: Product photos (multiple files allowed)
+        in: formData
+        name: photos
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update Product
+      tags:
+      - Product
   /provcity/detailcity/{city_id}:
     get:
       consumes:

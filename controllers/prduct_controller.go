@@ -14,6 +14,23 @@ import (
 	"gorm.io/gorm"
 )
 
+// Get All Products
+// @Summary Get All Products
+// @Description Get all products with optional filters.
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param nama_produk query string false "Filter by product name"
+// @Param limit query int false "Limit per page" default(10)
+// @Param page query int false "Page number" default(1)
+// @Param category_id query int false "Filter by category ID"
+// @Param toko_id query int false "Filter by store ID"
+// @Param max_harga query int false "Filter by maximum price"
+// @Param min_harga query int false "Filter by minimum price"
+// @Success 200 {object} Response
+// @Failure 500 {object} Response
+// @Router /product [get]
 func GetAllProducts(c *fiber.Ctx) error {
 	db := config.DB
 	var products []models.Produk
@@ -62,6 +79,19 @@ func GetAllProducts(c *fiber.Ctx) error {
 	})
 }
 
+// Get Product by ID
+// @Summary Get Product by ID
+// @Description Get a product by its ID.
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Product ID"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /product/{id} [get]
 func GetProductByID(c *fiber.Ctx) error {
 	// Extract parameter ID dari request
 	id := c.Params("id")
@@ -99,7 +129,25 @@ func GetProductByID(c *fiber.Ctx) error {
 	})
 }
 
-// CreateProduct - Tambah produk baru
+// Create Product
+// @Summary Create Product
+// @Description Create a new product.
+// @Tags Product
+// @Accept multipart/form-data
+// @Produce json
+// @Security BearerAuth
+// @Param nama_produk formData string true "Product name"
+// @Param deskripsi formData string true "Product description"
+// @Param id_category formData int true "Category ID"
+// @Param harga_reseller formData int true "Reseller price"
+// @Param harga_konsumen formData int true "Consumer price"
+// @Param stok formData int true "Product stock"
+// @Param photos formData file true "Product photos (multiple files allowed)"
+// @Success 201 {object} Response
+// @Failure 400 {object} Response
+// @Failure 401 {object} Response
+// @Failure 500 {object} Response
+// @Router /product [post]
 func CreateProduct(c *fiber.Ctx) error {
 	userID, err := middleware.ExtractUserID(c)
 	if err != nil {
@@ -208,7 +256,23 @@ func CreateProduct(c *fiber.Ctx) error {
 	})
 }
 
-// UpdateProduct memperbarui data produk berdasarkan ID
+// Update Product
+// @Summary Update Product
+// @Description Update a product's information.
+// @Tags Product
+// @Accept multipart/form-data
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Product ID"
+// @Param nama_produk formData string false "Product name"
+// @Param deskripsi formData string false "Product description"
+// @Param photos formData file false "Product photos (multiple files allowed)"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 401 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /product/{id} [put]
 func UpdateProduct(c *fiber.Ctx) error {
 	userID, err := middleware.ExtractUserID(c)
 	if err != nil {
@@ -289,6 +353,20 @@ func UpdateProduct(c *fiber.Ctx) error {
 	})
 }
 
+// Delete Product
+// @Summary Delete Product
+// @Description Delete a product by its ID.
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Product ID"
+// @Success 200 {object} Response
+// @Failure 400 {object} Response
+// @Failure 401 {object} Response
+// @Failure 404 {object} Response
+// @Failure 500 {object} Response
+// @Router /product/{id} [delete]
 func DeleteProduct(c *fiber.Ctx) error {
 	userID, err := middleware.ExtractUserID(c)
 	if err != nil {
