@@ -98,52 +98,6 @@ Now your application is connected to **Railway MySQL**.
 
 ---
 
-## Deploying to Google Cloud Run
-
-### 1. Setup Google Cloud Project
-
-- Create a **Google Cloud Project** at [Google Cloud Console](https://console.cloud.google.com/).
-- Enable **Cloud Run** and **Cloud SQL** APIs.
-- Install the **Google Cloud SDK** and authenticate:
-
-  ```sh
-  gcloud auth login
-  gcloud config set project YOUR_PROJECT_ID
-  ```
-
-### 2. Build & Push Docker Image
-
-1. **Build the Docker Image:**
-
-   ```sh
-   docker build -t gcr.io/YOUR_PROJECT_ID/evermos-service-go .
-   ```
-
-2. **Push to Google Container Registry:**
-
-   ```sh
-   gcloud auth configure-docker
-   docker push gcr.io/YOUR_PROJECT_ID/evermos-service-go
-   ```
-
-### 3. Deploy to Cloud Run
-
-1. **Deploy the container:**
-
-   ```sh
-   gcloud run deploy evermos-service-go \
-     --image gcr.io/YOUR_PROJECT_ID/evermos-service-go \
-     --platform managed \
-     --region us-central1 \
-     --allow-unauthenticated
-   ```
-
-2. **Access the API**
-   - Google Cloud Run will provide a public URL after deployment.
-   - You can test the API using Postman or your browser.
-
----
-
 ## API Documentation
 
 The API is documented using Swagger. Once the server is running, access the documentation at:
