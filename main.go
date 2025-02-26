@@ -9,11 +9,9 @@ import (
 	"github.com/habbazettt/evermos-service-go/config"
 	_ "github.com/habbazettt/evermos-service-go/docs"
 	"github.com/habbazettt/evermos-service-go/routes"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	_ = godotenv.Load()
 
 	config.ConnectDB()
 

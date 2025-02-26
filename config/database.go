@@ -15,11 +15,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() {
-	// Load environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Warning: Gagal memuat file .env")
-	}
+	_ = godotenv.Load()
 
 	// Ambil DSN dari .env
 	dsn := os.Getenv("DB_URL")
