@@ -126,7 +126,7 @@ definitions:
       tentang:
         type: string
     type: object
-host: localhost:8080
+host: evermos-service-go-production.up.railway.app
 info:
   contact:
     name: API Support

@@ -15,9 +15,9 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() {
+
 	_ = godotenv.Load()
 
-	// Ambil DSN dari .env
 	dsn := os.Getenv("DB_URL")
 	if dsn == "" {
 		log.Fatal("Error: Variabel DB_URL tidak ditemukan dalam .env")

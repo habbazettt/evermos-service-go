@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "evermos-service-go-production.up.railway.app",
     "basePath": "/api/v1",
     "paths": {
         "/auth/login": {

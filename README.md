@@ -103,10 +103,8 @@ Now your application is connected to **Railway MySQL**.
 The API is documented using Swagger. Once the server is running, access the documentation at:
 
 ```
-http://localhost:8080/swagger/index.html
+https://evermos-service-go-production.up.railway.app/swagger/index.html
 ```
-
-Or if deployed on Cloud Run, replace `localhost` with your Cloud Run URL.
 
 ---
 

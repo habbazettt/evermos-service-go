@@ -25,7 +25,7 @@ func main() {
 	// @termsOfService http://swagger.io/terms/
 	// @contact.name API Support
 	// @contact.url http://www.swagger.io/support
-	// @host localhost:8080
+	// @host evermos-service-go-production.up.railway.app
 	// @BasePath /api/v1
 	// @securityDefinitions.apikey BearerAuth
 	// @in header
