@@ -16,7 +16,7 @@ import (
 // @tags Store
 // @accept json
 // @produce json
-// @security BearerAuth
+// @Security BearerAuth
 // @success 200 {object} Response
 // @failure 400 {object} Response
 // @failure 404 {object} Response
@@ -60,6 +60,7 @@ func GetMyStore(c *fiber.Ctx) error {
 // @tags Store
 // @accept json
 // @produce json
+// @Security BearerAuth
 // @param page query int false "Page number" default(1)
 // @param limit query int false "Limit per page" default(10)
 // @param nama query string false "Search store by name"
@@ -97,6 +98,7 @@ func GetAllStores(c *fiber.Ctx) error {
 // @tags Store
 // @accept json
 // @produce json
+// @Security BearerAuth
 // @param id path int true "Store ID"
 // @success 200 {object} Response
 // @failure 400 {object} Response
@@ -132,7 +134,16 @@ func GetStoreByID(c *fiber.Ctx) error {
 // @tags Store
 // @accept json
 // @produce json
+// @Security BearerAuth
 // @param id path int true "Store ID"
+// @param nama_toko formData string false "Store Name"
+// @param photo formData file false "Store Photo (Upload Image File)"
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 401 {object} Response
+// @failure 404 {object} Response
+// @failure 500 {object} Response
+// @router /toko/{id} [put]
 func UpdateStore(c *fiber.Ctx) error {
 	// Extract user ID dari JWT
 	userID, err := middleware.ExtractUserID(c)

@@ -337,6 +337,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
       summary: Get All Stores
       tags:
       - Store
@@ -366,7 +368,55 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
       summary: Get Store by ID
+      tags:
+      - Store
+    put:
+      consumes:
+      - application/json
+      description: Update a store's information.
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Store Name
+        in: formData
+        name: nama_toko
+        type: string
+      - description: Store Photo (Upload Image File)
+        in: formData
+        name: photo
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Update Store
       tags:
       - Store
   /toko/my:
