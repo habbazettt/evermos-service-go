@@ -10,7 +10,18 @@ import (
 	"github.com/habbazettt/evermos-service-go/services"
 )
 
-// GetMyStore - Mendapatkan toko milik user yang sedang login
+// Get My Store
+// @summary Get My Store
+// @description Get the current user's store.
+// @tags Store
+// @accept json
+// @produce json
+// @security BearerAuth
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 404 {object} Response
+// @failure 500 {object} Response
+// @router /toko/my [get]
 func GetMyStore(c *fiber.Ctx) error {
 	// Ambil User ID dari Middleware JWT
 	userID, err := middleware.ExtractUserID(c)
@@ -43,7 +54,18 @@ func GetMyStore(c *fiber.Ctx) error {
 	})
 }
 
-// Get All Stores with Pagination & Search
+// Get All Stores
+// @summary Get All Stores
+// @description Get a list of all stores with pagination and search.
+// @tags Store
+// @accept json
+// @produce json
+// @param page query int false "Page number" default(1)
+// @param limit query int false "Limit per page" default(10)
+// @param nama query string false "Search store by name"
+// @success 200 {object} Response
+// @failure 500 {object} Response
+// @router /toko [get]
 func GetAllStores(c *fiber.Ctx) error {
 	// Parse query params
 	page, _ := strconv.Atoi(c.Query("page", "1"))
@@ -70,6 +92,16 @@ func GetAllStores(c *fiber.Ctx) error {
 }
 
 // Get Store by ID
+// @summary Get Store by ID
+// @description Retrieve a store's details by its ID.
+// @tags Store
+// @accept json
+// @produce json
+// @param id path int true "Store ID"
+// @success 200 {object} Response
+// @failure 400 {object} Response
+// @failure 404 {object} Response
+// @router /toko/{id} [get]
 func GetStoreByID(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -94,41 +126,13 @@ func GetStoreByID(c *fiber.Ctx) error {
 	})
 }
 
-// Create Store
-func CreateStore(c *fiber.Ctx) error {
-	// Extract user ID from JWT
-	userID, err := middleware.ExtractUserID(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"status":  false,
-			"message": err.Error(),
-		})
-	}
-
-	var storeData models.Toko
-	if err := c.BodyParser(&storeData); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  false,
-			"message": "Invalid request body",
-		})
-	}
-
-	store, err := services.CreateStore(userID, storeData)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"status":  false,
-			"message": "Gagal membuat toko",
-			"errors":  err.Error(),
-		})
-	}
-
-	return c.JSON(fiber.Map{
-		"status":  true,
-		"message": "Toko berhasil dibuat",
-		"data":    store,
-	})
-}
-
+// Update Store
+// @summary Update Store
+// @description Update a store's information.
+// @tags Store
+// @accept json
+// @produce json
+// @param id path int true "Store ID"
 func UpdateStore(c *fiber.Ctx) error {
 	// Extract user ID dari JWT
 	userID, err := middleware.ExtractUserID(c)
@@ -203,38 +207,5 @@ func UpdateStore(c *fiber.Ctx) error {
 		"status":  true,
 		"message": "Toko berhasil diperbarui",
 		"data":    store,
-	})
-}
-
-// Delete Store
-func DeleteStore(c *fiber.Ctx) error {
-	// Extract user ID from JWT
-	userID, err := middleware.ExtractUserID(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"status":  false,
-			"message": err.Error(),
-		})
-	}
-
-	storeID, err := strconv.Atoi(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":  false,
-			"message": "ID tidak valid",
-		})
-	}
-
-	err = services.DeleteStore(userID, uint(storeID))
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"status":  false,
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(fiber.Map{
-		"status":  true,
-		"message": "Toko berhasil dihapus",
 	})
 }

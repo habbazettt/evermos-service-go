@@ -29,11 +29,10 @@ func main() {
 
 	// @title Evermos Store and Product API
 	// @version 1.0
-	// @description This is the API documentation for Evermos service backend.
+	// @description API documentation for Evermos service backend.
 	// @termsOfService http://swagger.io/terms/
 	// @contact.name API Support
 	// @contact.url http://www.swagger.io/support
-	// @contact.email @habbazettt
 	// @host localhost:8080
 	// @BasePath /api/v1
 	// @securityDefinitions.apikey BearerAuth

@@ -129,10 +129,9 @@ definitions:
 host: localhost:8080
 info:
   contact:
-    email: '@habbazettt'
     name: API Support
     url: http://www.swagger.io/support
-  description: This is the API documentation for Evermos service backend.
+  description: API documentation for Evermos service backend.
   termsOfService: http://swagger.io/terms/
   title: Evermos Store and Product API
   version: "1.0"
@@ -307,6 +306,98 @@ paths:
       summary: Get List of Provinces
       tags:
       - Location
+  /toko:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all stores with pagination and search.
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search store by name
+        in: query
+        name: nama
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get All Stores
+      tags:
+      - Store
+  /toko/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a store's details by its ID.
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Get Store by ID
+      tags:
+      - Store
+  /toko/my:
+    get:
+      consumes:
+      - application/json
+      description: Get the current user's store.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      security:
+      - BearerAuth: []
+      summary: Get My Store
+      tags:
+      - Store
   /user:
     get:
       consumes:

@@ -9,7 +9,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/habbazettt/evermos-service-go/models" // Sesuaikan dengan path model yang benar
+	"github.com/habbazettt/evermos-service-go/models"
 )
 
 var DB *gorm.DB
@@ -22,9 +22,9 @@ func ConnectDB() {
 	}
 
 	// Ambil DSN dari .env
-	dsn := os.Getenv("DB_DSN")
+	dsn := os.Getenv("DB_URL")
 	if dsn == "" {
-		log.Fatal("Error: Variabel DB_DSN tidak ditemukan dalam .env")
+		log.Fatal("Error: Variabel DB_URL tidak ditemukan dalam .env")
 	}
 
 	// Koneksi ke database

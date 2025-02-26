@@ -49,16 +49,6 @@ func GetStoreByID(id uint) (*models.Toko, error) {
 	return &store, err
 }
 
-// Create Store
-func CreateStore(userID uint, storeData models.Toko) (*models.Toko, error) {
-	storeData.IDUser = userID
-	err := config.DB.Create(&storeData).Error
-	if err != nil {
-		return nil, err
-	}
-	return &storeData, nil
-}
-
 // UpdateStore memperbarui informasi toko
 func UpdateStore(userID, storeID uint, updateData models.Toko) (*models.Toko, error) {
 	var store models.Toko
@@ -76,23 +66,4 @@ func UpdateStore(userID, storeID uint, updateData models.Toko) (*models.Toko, er
 	}
 
 	return &store, nil
-}
-
-// Delete Store
-func DeleteStore(userID, storeID uint) error {
-	var store models.Toko
-
-	// Check if store exists and user has access
-	err := config.DB.Where("id = ? AND id_user = ?", storeID, userID).First(&store).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return errors.New("toko tidak ditemukan atau tidak memiliki akses")
-	}
-
-	// Delete the store
-	err = config.DB.Delete(&store).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
