@@ -1,4 +1,4 @@
-# Evermos Store - REST API
+# Store Management Service - REST API
 
 Evermos Service is a backend API built using **Golang, Fiber, Cloudinary, and MySQL**. This project provides essential services for store management, product management, transactions, and user authentication. The API follows RESTful principles and includes authentication using JWT tokens.
 
